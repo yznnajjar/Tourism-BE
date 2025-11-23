@@ -1,0 +1,1437 @@
+{
+	"info": {
+		"_postman_id": "tourism-api-collection",
+		"name": "Tourism API",
+		"description": "Complete API collection for Tourism Mobile App Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "destinationId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "tourId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hotelId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookingId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "reviewId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "favoriteId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["health"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('accessToken', jsonData.accessToken);",
+									"    pm.collectionVariables.set('userId', jsonData.user.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phone\": \"+1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('accessToken', jsonData.accessToken);",
+									"    pm.collectionVariables.set('userId', jsonData.user.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "profile"]
+						}
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"John Updated\",\n  \"lastName\": \"Doe Updated\",\n  \"phone\": \"+1234567891\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "profile"]
+						}
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"password123\",\n  \"newPassword\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/change-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "change-password"]
+						}
+					}
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Destinations",
+			"item": [
+				{
+					"name": "Get All Destinations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/destinations?search=&categoryId=&limit=10&offset=0",
+							"host": ["{{baseUrl}}"],
+							"path": ["destinations"],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "categoryId",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Destination by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('destinationId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/destinations/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["destinations", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{destinationId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Destination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('destinationId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Paris, France\",\n  \"description\": \"The City of Light, known for its art, fashion, and culture\",\n  \"location\": \"Paris, France\",\n  \"latitude\": 48.8566,\n  \"longitude\": 2.3522,\n  \"images\": [\"https://example.com/paris1.jpg\", \"https://example.com/paris2.jpg\"],\n  \"thumbnail\": \"https://example.com/paris-thumb.jpg\",\n  \"categoryIds\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/destinations",
+							"host": ["{{baseUrl}}"],
+							"path": ["destinations"]
+						}
+					}
+				},
+				{
+					"name": "Update Destination",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Paris, France - Updated\",\n  \"description\": \"Updated description\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/destinations/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["destinations", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{destinationId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Destination",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/destinations/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["destinations", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{destinationId}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Tours",
+			"item": [
+				{
+					"name": "Get All Tours",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tours?search=&destinationId=&categoryId=&limit=10&offset=0",
+							"host": ["{{baseUrl}}"],
+							"path": ["tours"],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "destinationId",
+									"value": ""
+								},
+								{
+									"key": "categoryId",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Tour by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('tourId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tours/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["tours", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{tourId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Tour",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('tourId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Eiffel Tower Guided Tour\",\n  \"description\": \"Explore the iconic Eiffel Tower with a professional guide\",\n  \"price\": 50.00,\n  \"duration\": \"2 hours\",\n  \"destinationId\": \"{{destinationId}}\",\n  \"maxParticipants\": 20,\n  \"meetingPoint\": \"Eiffel Tower Entrance\",\n  \"included\": [\"Professional guide\", \"Skip-the-line tickets\"],\n  \"excluded\": [\"Food and drinks\", \"Transportation\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tours",
+							"host": ["{{baseUrl}}"],
+							"path": ["tours"]
+						}
+					}
+				},
+				{
+					"name": "Update Tour",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"price\": 55.00,\n  \"duration\": \"2.5 hours\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tours/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["tours", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{tourId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Tour",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tours/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["tours", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{tourId}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Hotels",
+			"item": [
+				{
+					"name": "Get All Hotels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/hotels?search=&destinationId=&limit=10&offset=0",
+							"host": ["{{baseUrl}}"],
+							"path": ["hotels"],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "destinationId",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Hotel by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('hotelId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/hotels/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["hotels", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{hotelId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Hotel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('hotelId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Grand Hotel Paris\",\n  \"description\": \"Luxury hotel in the heart of Paris\",\n  \"pricePerNight\": 150.00,\n  \"type\": \"hotel\",\n  \"address\": \"123 Champs-Élysées, Paris, France\",\n  \"latitude\": 48.8698,\n  \"longitude\": 2.3081,\n  \"destinationId\": \"{{destinationId}}\",\n  \"totalRooms\": 100,\n  \"amenities\": [\"WiFi\", \"Pool\", \"Spa\", \"Gym\", \"Restaurant\"],\n  \"checkInTime\": \"15:00\",\n  \"checkOutTime\": \"11:00\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/hotels",
+							"host": ["{{baseUrl}}"],
+							"path": ["hotels"]
+						}
+					}
+				},
+				{
+					"name": "Update Hotel",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"pricePerNight\": 160.00,\n  \"totalRooms\": 110\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/hotels/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["hotels", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{hotelId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Hotel",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/hotels/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["hotels", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{hotelId}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Get All Bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": ["{{baseUrl}}"],
+							"path": ["bookings"]
+						}
+					}
+				},
+				{
+					"name": "Get Booking by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('bookingId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["bookings", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bookingId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Tour Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('bookingId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"tour\",\n  \"tourId\": \"{{tourId}}\",\n  \"numberOfGuests\": 2,\n  \"tourDate\": \"2024-12-25\",\n  \"specialRequests\": \"Please provide wheelchair access\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": ["{{baseUrl}}"],
+							"path": ["bookings"]
+						}
+					}
+				},
+				{
+					"name": "Create Hotel Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('bookingId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"hotel\",\n  \"hotelId\": \"{{hotelId}}\",\n  \"numberOfGuests\": 2,\n  \"checkInDate\": \"2024-12-20\",\n  \"checkOutDate\": \"2024-12-25\",\n  \"specialRequests\": \"Late checkout if possible\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings",
+							"host": ["{{baseUrl}}"],
+							"path": ["bookings"]
+						}
+					}
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"confirmed\",\n  \"specialRequests\": \"Updated special requests\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bookings/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["bookings", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bookingId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Cancel Booking",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/:id/cancel",
+							"host": ["{{baseUrl}}"],
+							"path": ["bookings", ":id", "cancel"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bookingId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Booking",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/bookings/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["bookings", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bookingId}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Get All Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reviews?destinationId=&tourId=&hotelId=&limit=10&offset=0",
+							"host": ["{{baseUrl}}"],
+							"path": ["reviews"],
+							"query": [
+								{
+									"key": "destinationId",
+									"value": ""
+								},
+								{
+									"key": "tourId",
+									"value": ""
+								},
+								{
+									"key": "hotelId",
+									"value": ""
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Review by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('reviewId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reviews/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["reviews", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{reviewId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Destination Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('reviewId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Amazing destination! Highly recommended.\",\n  \"destinationId\": \"{{destinationId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": ["{{baseUrl}}"],
+							"path": ["reviews"]
+						}
+					}
+				},
+				{
+					"name": "Create Tour Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('reviewId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 4,\n  \"comment\": \"Great tour with knowledgeable guide\",\n  \"tourId\": \"{{tourId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": ["{{baseUrl}}"],
+							"path": ["reviews"]
+						}
+					}
+				},
+				{
+					"name": "Create Hotel Review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('reviewId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excellent hotel with great service\",\n  \"hotelId\": \"{{hotelId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": ["{{baseUrl}}"],
+							"path": ["reviews"]
+						}
+					}
+				},
+				{
+					"name": "Update Review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Updated review comment\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["reviews", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{reviewId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/reviews/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["reviews", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{reviewId}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories"]
+						}
+					}
+				},
+				{
+					"name": "Get Category by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('categoryId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{categoryId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('categoryId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Adventure\",\n  \"description\": \"Adventure and outdoor activities\",\n  \"icon\": \"https://example.com/adventure-icon.png\",\n  \"image\": \"https://example.com/adventure-image.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories"]
+						}
+					}
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Adventure & Outdoor\",\n  \"description\": \"Updated description\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{categoryId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["categories", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{categoryId}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Favorites",
+			"item": [
+				{
+					"name": "Get All Favorites",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/favorites?type=",
+							"host": ["{{baseUrl}}"],
+							"path": ["favorites"],
+							"query": [
+								{
+									"key": "type",
+									"value": "",
+									"description": "Optional: destination, tour, or hotel"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Add Destination to Favorites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('favoriteId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"destination\",\n  \"destinationId\": \"{{destinationId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/favorites",
+							"host": ["{{baseUrl}}"],
+							"path": ["favorites"]
+						}
+					}
+				},
+				{
+					"name": "Add Tour to Favorites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('favoriteId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"tour\",\n  \"tourId\": \"{{tourId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/favorites",
+							"host": ["{{baseUrl}}"],
+							"path": ["favorites"]
+						}
+					}
+				},
+				{
+					"name": "Add Hotel to Favorites",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('favoriteId', jsonData._id || jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"hotel\",\n  \"hotelId\": \"{{hotelId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/favorites",
+							"host": ["{{baseUrl}}"],
+							"path": ["favorites"]
+						}
+					}
+				},
+				{
+					"name": "Remove Favorite by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/favorites/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["favorites", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{favoriteId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Remove Favorite by Item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/favorites/item/:type/:itemId",
+							"host": ["{{baseUrl}}"],
+							"path": ["favorites", "item", ":type", ":itemId"],
+							"variable": [
+								{
+									"key": "type",
+									"value": "destination",
+									"description": "destination, tour, or hotel"
+								},
+								{
+									"key": "itemId",
+									"value": "{{destinationId}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Global Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/search?q=paris&limit=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["search"],
+							"query": [
+								{
+									"key": "q",
+									"value": "paris",
+									"description": "Search query"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Limit results per category"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
+
